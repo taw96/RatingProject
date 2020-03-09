@@ -3,6 +3,8 @@ package com.example.ratingproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -56,6 +58,8 @@ public class Popup extends AppCompatActivity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (width *0.8),(int)(height*0.6));
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
     }
 
 
