@@ -57,7 +57,7 @@ public class Popup extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width *0.8),(int)(height*0.6));
+        getWindow().setLayout((int) (width *0.9),(int)(height*0.7));
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }

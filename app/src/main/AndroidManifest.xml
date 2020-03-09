@@ -21,7 +21,8 @@
         </activity>
         <activity
             android:name=".Popup"
-            android:theme="@style/AppTheme.CustomTheme" />
+            android:theme="@style/AppTheme.CustomTheme"
+            />
 
         <meta-data
             android:name="com.parse.SERVER_URL"
