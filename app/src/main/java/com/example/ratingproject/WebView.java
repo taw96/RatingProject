@@ -28,14 +28,10 @@ public class WebView extends AppCompatActivity {
 //                return super.shouldOverrideUrlLoading(view, request);
 
                 if (request.startsWith("eloops://")) {
-                    Toast.makeText(WebView.this, "yew", Toast.LENGTH_SHORT).show();
                     if(request.endsWith("showRating"))
                 startActivity(new Intent(WebView.this,Popup.class));
-                } else {
-                    Toast.makeText(WebView.this, "no", Toast.LENGTH_SHORT).show();
                 }
                 return true;
-
             }
         });
 
