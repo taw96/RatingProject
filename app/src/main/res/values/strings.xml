@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Rating Project</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Change the following strings as required -->
+    <string name="back4app_app_id">iKudR8PGRtr94SRvmjTuF1jDAO7wi8oe0FUyKScG</string>
+    <string name="back4app_client_key">1BtPhijchFnhK9mJ1Bvm10aRVHJfjxrhX6eB19Mg</string>
 </resources>
