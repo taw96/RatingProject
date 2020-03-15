@@ -16,13 +16,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".WebView">
+        <activity android:name=".WebViewActivity">
 
         </activity>
         <activity
-            android:name=".Popup"
+            android:name=".PopupActivity"
             android:theme="@style/AppTheme.CustomTheme"
             />
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
 
         <meta-data
             android:name="com.parse.SERVER_URL"

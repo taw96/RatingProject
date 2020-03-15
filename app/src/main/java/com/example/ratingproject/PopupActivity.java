@@ -16,9 +16,7 @@ import android.widget.Toast;
 import com.parse.ParseInstallation;
 import com.parse.SaveCallback;
 
-public class Popup extends AppCompatActivity {
-
-
+public class PopupActivity extends AppCompatActivity {
 
     Button toPlayStore, dismiss;
 

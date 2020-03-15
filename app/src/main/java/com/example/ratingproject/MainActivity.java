@@ -3,7 +3,9 @@ package com.example.ratingproject;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +13,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 import com.parse.ParseInstallation;
 import com.parse.SaveCallback;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,14 +36,26 @@ public class MainActivity extends AppCompatActivity {
 
     final private static String Rating = "user_choice";
 
-    Button showPopup, serverPopup,toWebView;
+    Button showPopup, serverPopup,toWebView, crashButton;
     ListView fetch;
+    public static Context contextOfApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ELratingManager eLratingManager = new ELratingManager(MainActivity.this);
+
+        contextOfApplication = getApplicationContext();
+
+        eLratingManager.appOpened(MainActivity.this);
+
+        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+
+        Fabric.with(this, new Crashlytics());
+
+        //defining UI items
         fetch = (ListView) findViewById(R.id.fetchData);
 
         showPopup = (Button) findViewById(R.id.showPopup);
@@ -42,10 +64,16 @@ public class MainActivity extends AppCompatActivity {
 
         toWebView = (Button) findViewById(R.id.toWebView);
 
+        crashButton = (Button) findViewById(R.id.crashButton);
+
+
+        //write to shared preferences user is on app
+
         showPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPopup();
+
             }
         });
 
@@ -53,17 +81,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getShowPopupValue();
+
             }
         });
 
         toWebView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, WebView.class));
+                startActivity(new Intent(MainActivity.this, WebViewActivity.class));
             }
         });
 
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Crashlytics.getInstance().crash();
+
+            }
+        });
     }
+
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
+    }
+
     private void getShowPopupValue() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(UserClient.BASE_URL)
@@ -79,26 +120,24 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<ShowPopup>> call, Response<List<ShowPopup>> response) {
 
                 List<ShowPopup> heroList = response.body();
-                if(heroList.get(0).getShow_rating_popup()) {
+                if (heroList.get(0).getShow_rating_popup()) {
                     showPopup();
                     Toast.makeText(MainActivity.this, "show popup!", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "don't show the popup..", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<List<ShowPopup>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        }
-
-
+    }
 
     private void showPopup(){
-        Intent i = new Intent(getApplicationContext(),Popup.class);
+        Intent i = new Intent(getApplicationContext(), PopupActivity.class);
         startActivityForResult(i,1);
     }
 
@@ -112,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             setDataToParse(Rating,"Didn't rate");
         }
     }
-    private void setDataToParse(String key, String value){
+    public void setDataToParse(String key, String value){
 
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
 
@@ -127,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
+
 }
+
 

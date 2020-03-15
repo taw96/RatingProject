@@ -5,9 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-public class WebView extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity {
 
     android.webkit.WebView webView;
 
@@ -29,7 +28,7 @@ public class WebView extends AppCompatActivity {
 
                 if (request.startsWith("eloops://")) {
                     if(request.endsWith("showRating"))
-                startActivity(new Intent(WebView.this,Popup.class));
+                startActivity(new Intent(WebViewActivity.this, PopupActivity.class));
                 }
                 return true;
             }
