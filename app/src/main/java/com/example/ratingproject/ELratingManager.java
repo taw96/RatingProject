@@ -22,9 +22,9 @@ import java.util.Date;
 public class ELratingManager extends Application {
 
     private final static long DAYS_CALCULATION_TO_MILLISEC = 24 * 60 * 60 * 1000;
-    private final static double LAUNCHES_UNTIL_PROMPT = 7;
+    private final static double LAUNCHES_UNTIL_PROMPT = 2;
     private final static double DAYS_UNTIL_PROMPT_IN_MILLISEC = 7;
-    private final static double DAYS_WITHOUT_CRASHED_UNTIL_PROMPT = 30;
+    private final static double DAYS_WITHOUT_CRASHED_UNTIL_PROMPT = 0.0000001;
     private final static String SHARED_PREFERENCE_FILE_NAME = "SharedPrefsFile";
     private final static String SHARED_PREFERENCE_ARRAY_NAME = "AppLaunchesArray";
 
@@ -68,23 +68,28 @@ public class ELratingManager extends Application {
                 System.out.println("Entrance " + i + ":  " + myDate + " " + timeInMillis);
                 if (timeInMillis + DAYS_UNTIL_PROMPT_IN_MILLISEC < System.currentTimeMillis()) {
                     appLaunches.remove(i);
-
-                    }
                 }
-            String LastCrashTimeString = sharedPreferences.getString("CrashDate"," ");
-            System.out.println("Last Crash Time String: " + LastCrashTimeString);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            Date newDate = sdf.parse(LastCrashTimeString, new ParsePosition(0));
-            long LastCrashInMillis = newDate.getTime();
+            }
+            String LastCrashTimeString = sharedPreferences.getString("CrashDate", null);
+            if (LastCrashTimeString != null) {
 
-            if (appLaunches.size() > LAUNCHES_UNTIL_PROMPT && LastCrashInMillis + DAYS_WITHOUT_CRASHED_UNTIL_PROMPT*DAYS_CALCULATION_TO_MILLISEC < System.currentTimeMillis()) {
-                Intent i = new Intent(activity, PopupActivity.class);
-                activity.startActivityForResult(i, 1);
+                System.out.println("Last Crash Time String: " + LastCrashTimeString);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                Date newDate = sdf.parse(LastCrashTimeString, new ParsePosition(0));
+                long LastCrashInMillis = newDate.getTime();
 
-             }else{
+                if (appLaunches.size() > LAUNCHES_UNTIL_PROMPT && LastCrashInMillis + DAYS_WITHOUT_CRASHED_UNTIL_PROMPT * DAYS_CALCULATION_TO_MILLISEC < System.currentTimeMillis()) {
+                    Intent i = new Intent(activity, PopupActivity.class);
+                    activity.startActivityForResult(i, 1);
+                    return;
 
-                Toast.makeText(activity, "Not ready to show popup", Toast.LENGTH_SHORT).show();
+                } else {
 
+                    Toast.makeText(activity, "Not ready to show popup", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                System.out.println("no crash occurred yet");
+                return;
             }
         }
     }

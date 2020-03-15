@@ -27,6 +27,7 @@
         android:textColor="#000000"
         android:textSize="25dp"
         android:textStyle="bold"
+
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +69,8 @@
         android:background="@drawable/decline_button"
         android:text="No Thanks"
         android:textColor="#3399FF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        style="?android:attr/borderlessButtonStyle"
+         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toPlayStore" />
