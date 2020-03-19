@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ELRatingManager extends Application {
+public class ELRatingManager {
 
     //constant declarations for checking relevance of last crash date and entrances amount in specific amount of days.
 
@@ -49,7 +49,7 @@ public class ELRatingManager extends Application {
         ArrayList<String> appLaunches = new ArrayList<String>();
 
         //first of all, load the current data from shared preference, it stored as a string so i've converted it with gson-json
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(SHARED_PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(SHARED_PREFERENCE_FILE_NAME, applicationContext.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFERENCE_ARRAY_NAME, null);
         Type type = new TypeToken<ArrayList<String>>() {
@@ -102,7 +102,7 @@ public class ELRatingManager extends Application {
 
                 } else {
 
-                    Toast.makeText(activity, "Not ready to show popup_en", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Not ready to show rating_dialog_layout", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 System.out.println("no crash occurred yet");
@@ -115,7 +115,7 @@ public class ELRatingManager extends Application {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String date = dateFormat.format(new Date());
         array.add(date);
-        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_FILE_NAME, MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_FILE_NAME, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(array);

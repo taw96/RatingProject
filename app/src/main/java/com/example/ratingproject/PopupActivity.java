@@ -18,7 +18,7 @@ public class PopupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup_en);
+        setContentView(R.layout.rating_dialog_layout);
 
         dismiss =  findViewById(R.id.dismiss);
         dismiss.setTransformationMethod(null);
@@ -57,6 +57,5 @@ public class PopupActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }
-
 
 }

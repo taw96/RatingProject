@@ -45,27 +45,12 @@ public class MainActivity extends AppCompatActivity {
     final private static String Rating = "user_choice";
 
     Button showPopup, serverPopup,toWebView, crashButton;
-    ListView fetch;
     public static Context contextOfApplication;
-
-    private static final String CHANNEL_ID = "tomer_amit";
-    private static final String CHANNEL_NAME = "tomer_amit";
-    private static final String CHANNEL_DESC = "tomer_amit Notifications";
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription(CHANNEL_DESC);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
 
         ELRatingManager ratingManager = new ELRatingManager(MainActivity.this);
 
@@ -78,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
 
         //defining UI items
-        fetch = findViewById(R.id.fetchData);
 
         showPopup = findViewById(R.id.showPopup);
 
@@ -130,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private void getShowPopupValue() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(UserClient.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
+                .addConverterFactory(GsonConverterFactory.create()) //using GsonConverterFactory to directly convert json data to object
                 .build();
 
         UserClient userClient = retrofit.create(UserClient.class);
@@ -141,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PopupServer>> call, Response<List<PopupServer>> response) {
 
-                List<PopupServer> heroList = response.body();
-                if (heroList.get(0).getShow_rating_popup()) {
+                List<PopupServer> arr = response.body();
+                if (arr.get(0).getShow_rating_popup()) {
                     showPopup();
-                    Toast.makeText(MainActivity.this, "show popup_en!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "show rating_dialog_layout!", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(MainActivity.this, "don't show the popup_en..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "don't show the rating_dialog_layout..", Toast.LENGTH_SHORT).show();
                 }
             }
 
