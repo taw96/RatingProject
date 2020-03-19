@@ -19,42 +19,56 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ELratingManager extends Application {
+public class ELRatingManager extends Application {
+
+    //constant declarations for checking relevance of last crash date and entrances amount in specific amount of days.
+
+    private Activity activity;
 
     private final static long DAYS_CALCULATION_TO_MILLISEC = 24 * 60 * 60 * 1000;
     private final static double LAUNCHES_UNTIL_PROMPT = 2;
     private final static double DAYS_UNTIL_PROMPT_IN_MILLISEC = 7;
-    private final static double DAYS_WITHOUT_CRASHED_UNTIL_PROMPT = 0.0000001;
+    private final static double DAYS_WITHOUT_CRASHED_UNTIL_PROMPT = 30;
     private final static String SHARED_PREFERENCE_FILE_NAME = "SharedPrefsFile";
     private final static String SHARED_PREFERENCE_ARRAY_NAME = "AppLaunchesArray";
 
-    private Activity activity;
-
-    public ELratingManager(Activity ac){
+    public ELRatingManager(Activity ac){
         this.activity = ac;
     }
 
+    //main method of this class, gets called only once at the "on create" of the main activity -
+    //suppose to check how many times user launched the app and detect if he launched it enough times and had no crash in
+    //the app for enough time so it make sense to pop him the rating dialog.
+
     public void appOpened(Activity activity) {
 
+        //allowing use sharedPreference even though it is not an activity
         Context applicationContext = MainActivity.getContextOfApplication();
 
+        //"appLaunches" is holding all the dates of user entrances to the app
         ArrayList<String> appLaunches = new ArrayList<String>();
 
+        //first of all, load the current data from shared preference, it stored as a string so i've converted it with gson-json
         SharedPreferences sharedPreferences = activity.getSharedPreferences(SHARED_PREFERENCE_FILE_NAME, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SHARED_PREFERENCE_ARRAY_NAME, null);
         Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
 
+        //conversion
         appLaunches = gson.fromJson(json, type);
 
+        //check for values in the array - if it's the first time the app launched, then it supposed to be empty-null.
         if (appLaunches == null) {
             Toast.makeText(activity, "it's null", Toast.LENGTH_SHORT).show();
+
+            //if so, initialize a new arrayList and add the current launchTime using the "addNewLaunchTime" method(down below).
             appLaunches = new ArrayList<String>();
             addNewLaunchTime(appLaunches, sharedPreferences, activity);
 
         } else {
-
+            //else means it's not the first time the launched, add the current initialization, but also
+            //loop through the array and convert the string date elements to milliseconds.
             Toast.makeText(activity, "it's not null", Toast.LENGTH_SHORT).show();
             addNewLaunchTime(appLaunches, sharedPreferences, activity);
 
@@ -64,9 +78,12 @@ public class ELratingManager extends Application {
                 String myDate = appLaunches.get(i);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 Date newDate = sdf.parse(myDate, new ParsePosition(0));
-                long timeInMillis = newDate.getTime();
-                System.out.println("Entrance " + i + ":  " + myDate + " " + timeInMillis);
-                if (timeInMillis + DAYS_UNTIL_PROMPT_IN_MILLISEC < System.currentTimeMillis()) {
+                long ElementTimeInMillis = newDate.getTime();
+                System.out.println("Entrance " + i + ":  " + myDate + " " + ElementTimeInMillis);
+
+                //check if the DATE element is out dated (it's been before the earliest time we want to check-"DAYS_UNTIL_PROMPT_IN_MILLISEC")
+                if (ElementTimeInMillis + DAYS_UNTIL_PROMPT_IN_MILLISEC*DAYS_CALCULATION_TO_MILLISEC < System.currentTimeMillis()) {
+                    //if so, remove the item and keep in the array only the items the dectate
                     appLaunches.remove(i);
                 }
             }
@@ -85,7 +102,7 @@ public class ELratingManager extends Application {
 
                 } else {
 
-                    Toast.makeText(activity, "Not ready to show popup", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Not ready to show popup_en", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 System.out.println("no crash occurred yet");

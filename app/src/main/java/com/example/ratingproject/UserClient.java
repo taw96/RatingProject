@@ -10,7 +10,7 @@ public interface UserClient {
     String BASE_URL = "http://www.mocky.io/v2/";
 
     @GET("5e6541c034000064003389bf")
-    Call<List<ShowPopup>> getShowPopupValue();
+    Call<List<PopupServer>> getShowPopupValue();
 }
 
 

@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_layout"
+    android:background="@drawable/rectangle_layout"
     app:layout_constraintCircleRadius="40dp"
     >
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="370dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginLeft="26dp"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="1dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
@@ -25,32 +24,30 @@
         android:text="Your opinion matters to us!"
         android:textAlignment="center"
         android:textColor="#000000"
+
         android:textSize="25dp"
         android:textStyle="bold"
-
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="360dp"
-        android:layout_height="130dp"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:paddingRight="20dp"
-        android:text="We work super hard to make Eloops better for you, and would love to know how would you rate our app?"
+        android:text="We are motivated to give you the best experience, would you mind helping us and rating Eloops on the Play Store ?"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="19.7dp"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/toPlayStore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,25 +55,7 @@
 
     <Button
         android:id="@+id/dismiss"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="106dp"
-        android:layout_marginLeft="106dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="105dp"
-        android:layout_marginRight="105dp"
-        android:layout_marginBottom="86dp"
-        android:background="@drawable/decline_button"
-        android:text="No Thanks"
-        android:textColor="#3399FF"
         style="?android:attr/borderlessButtonStyle"
-         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toPlayStore" />
-
-    <Button
-        android:id="@+id/toPlayStore"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="106dp"
@@ -84,13 +63,46 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="105dp"
         android:layout_marginRight="105dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/decline_button"
+        android:text="No Thanks"
+        android:textColor="#3399FF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toPlayStore" />
+
+    <Button
+        android:id="@+id/toPlayStore"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="106dp"
+        android:layout_marginLeft="106dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginRight="105dp"
         android:background="@drawable/approval_button"
-        android:text="Rate Now"
+        android:text="Yes, I'd love to rate "
         android:textColor="#ffff"
         app:layout_constraintBottom_toTopOf="@+id/dismiss"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="319dp"
+        android:layout_height="167dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginLeft="66dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginRight="51dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/popup_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

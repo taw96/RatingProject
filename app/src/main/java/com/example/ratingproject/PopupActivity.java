@@ -8,13 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-import com.parse.ParseInstallation;
-import com.parse.SaveCallback;
 
 public class PopupActivity extends AppCompatActivity {
 
@@ -23,10 +18,12 @@ public class PopupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup);
+        setContentView(R.layout.popup_en);
 
-        dismiss = (Button) findViewById(R.id.dismiss);
-        toPlayStore = (Button) findViewById(R.id.toPlayStore);
+        dismiss =  findViewById(R.id.dismiss);
+        dismiss.setTransformationMethod(null);
+        toPlayStore =  findViewById(R.id.toPlayStore);
+        toPlayStore.setTransformationMethod(null);
 
         dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +32,7 @@ public class PopupActivity extends AppCompatActivity {
                 Intent i = new Intent();
                 setResult(RESULT_CANCELED,i);
                 finish();
+
             }
         });
 
@@ -55,7 +53,7 @@ public class PopupActivity extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width *0.9),(int)(height*0.8));
+        getWindow().setLayout((int) (width),(int)(height));
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }

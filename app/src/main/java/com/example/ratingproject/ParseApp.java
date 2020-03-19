@@ -1,14 +1,17 @@
 package com.example.ratingproject;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseSession;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 import com.parse.ParseClassName;
 
@@ -35,7 +38,20 @@ public class ParseApp extends Application {
                 .build());
 
 
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("GCMSenderId", "923774951114");
+        installation.saveInBackground();
 
+        ParsePush.subscribeInBackground("", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("TAG", "successfully subscribed to the broadcast channel.");
+                } else {
+                    Log.e("TAG", "failed to subscribe for push", e);
+                }
+
+            }
+        });
     }
 }

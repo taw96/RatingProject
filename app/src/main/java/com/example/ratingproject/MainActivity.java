@@ -2,10 +2,15 @@ package com.example.ratingproject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +22,9 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.parse.ParseInstallation;
 import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,31 +48,45 @@ public class MainActivity extends AppCompatActivity {
     ListView fetch;
     public static Context contextOfApplication;
 
+    private static final String CHANNEL_ID = "tomer_amit";
+    private static final String CHANNEL_NAME = "tomer_amit";
+    private static final String CHANNEL_DESC = "tomer_amit Notifications";
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ELratingManager eLratingManager = new ELratingManager(MainActivity.this);
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(CHANNEL_DESC);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        ELRatingManager ratingManager = new ELRatingManager(MainActivity.this);
 
         contextOfApplication = getApplicationContext();
 
-        eLratingManager.appOpened(MainActivity.this);
+        ratingManager.appOpened(MainActivity.this);
 
         Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
 
         Fabric.with(this, new Crashlytics());
 
         //defining UI items
-        fetch = (ListView) findViewById(R.id.fetchData);
+        fetch = findViewById(R.id.fetchData);
 
-        showPopup = (Button) findViewById(R.id.showPopup);
+        showPopup = findViewById(R.id.showPopup);
 
-        serverPopup = (Button) findViewById(R.id.serverPopup);
+        serverPopup = findViewById(R.id.serverPopup);
 
-        toWebView = (Button) findViewById(R.id.toWebView);
+        toWebView =  findViewById(R.id.toWebView);
 
-        crashButton = (Button) findViewById(R.id.crashButton);
+        crashButton = findViewById(R.id.crashButton);
 
 
         //write to shared preferences user is on app
@@ -113,24 +135,24 @@ public class MainActivity extends AppCompatActivity {
 
         UserClient userClient = retrofit.create(UserClient.class);
 
-        Call<List<ShowPopup>> call = userClient.getShowPopupValue();
+        Call<List<PopupServer>> call = userClient.getShowPopupValue();
 
-        call.enqueue(new Callback<List<ShowPopup>>() {
+        call.enqueue(new Callback<List<PopupServer>>() {
             @Override
-            public void onResponse(Call<List<ShowPopup>> call, Response<List<ShowPopup>> response) {
+            public void onResponse(Call<List<PopupServer>> call, Response<List<PopupServer>> response) {
 
-                List<ShowPopup> heroList = response.body();
+                List<PopupServer> heroList = response.body();
                 if (heroList.get(0).getShow_rating_popup()) {
                     showPopup();
-                    Toast.makeText(MainActivity.this, "show popup!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "show popup_en!", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(MainActivity.this, "don't show the popup..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "don't show the popup_en..", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ShowPopup>> call, Throwable t) {
+            public void onFailure(Call<List<PopupServer>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -167,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
 

@@ -2,12 +2,12 @@ package com.example.ratingproject;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ShowPopup {
+public class PopupServer {
 
     private Boolean show_rating_popup;
 
 
-    public ShowPopup(Boolean show_rating) {
+    public PopupServer(Boolean show_rating) {
         this.show_rating_popup = show_rating;
 
     }
