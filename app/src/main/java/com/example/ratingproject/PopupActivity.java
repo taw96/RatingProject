@@ -29,7 +29,8 @@ public class PopupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                Intent i = new Intent();
+
+                Intent i = new Intent() ;
                 setResult(RESULT_CANCELED,i);
                 finish();
 
@@ -39,8 +40,6 @@ public class PopupActivity extends AppCompatActivity {
         toPlayStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.eventloops.eventloops"));
-                startActivity(intent);
                 Intent i = new Intent();
                 setResult(RESULT_OK,i);
                 finish();
@@ -57,5 +56,4 @@ public class PopupActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
     }
-
 }
