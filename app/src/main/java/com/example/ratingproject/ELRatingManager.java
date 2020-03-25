@@ -30,6 +30,7 @@ public class ELRatingManager {
     private final static long DAYS_CALCULATION_TO_MILLISEC = 24 * 60 * 60 * 1000;
     private final static int LAUNCHES_UNTIL_PROMPT = 1;
     private final static int DAYS_UNTIL_PROMPT_IN_MILLISEC = 7;
+    private final static int DAYS_TO_CHECK_FROM_FIRST_RATING = 365;
     private final static double DAYS_WITH_NO_CRASH_UNTIL_PROMPT = 0.0000001;
     private final static String SHARED_PREFERENCE_FILE_NAME = "SharedPrefsFile";
     private final static String SHARED_PREFERENCE_ARRAY_NAME = "AppLaunchesArray";
@@ -98,22 +99,30 @@ public class ELRatingManager {
         }
     }
 
-    public void checkForShowDialog(){
+    public void checkForDialogRelevanceByCrashAndEntrances(){
+
+        //get last crash from shared preferences
         SharedPreferences sharedPreferences = activity.getSharedPreferences(SHARED_PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         String LastCrashTimeString = sharedPreferences.getString("CrashDate", null);
-        if (LastCrashTimeString == null && appLaunches.size() > LAUNCHES_UNTIL_PROMPT) {
-            this.checkForDialogAppearances();
 
+        //if there was no crash and there were enough entrances-> proceed to check by appearances
+        if (LastCrashTimeString == null && appLaunches.size() > LAUNCHES_UNTIL_PROMPT) {
+            this.checkForDialogRelevanceByDialogAppearances();
+
+            //else if there was a crash and there were enough entrances-> proceed to check whether the crash relevant or not
         } else if ( LastCrashTimeString != null && appLaunches.size() > LAUNCHES_UNTIL_PROMPT) {
+
             //System.out.println("Last Crash Time String: " + LastCrashTimeString);
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             Date newDate = sdf.parse(LastCrashTimeString, new ParsePosition(0));
             long LastCrashInMillis = newDate.getTime();
 
+            //if the crash happened in the time we want -> proceed to check by appearances
             if(LastCrashInMillis + DAYS_WITH_NO_CRASH_UNTIL_PROMPT * DAYS_CALCULATION_TO_MILLISEC < System.currentTimeMillis()){
-                this.checkForDialogAppearances();
+                this.checkForDialogRelevanceByDialogAppearances();
 
+            //else-> Do nothing
             } else {
                 Toast.makeText(activity, "Not ready to show rating_dialog_layout", Toast.LENGTH_SHORT).show();
             }
@@ -121,13 +130,17 @@ public class ELRatingManager {
 
     }
 
-    private void checkForDialogAppearances(){
+    private void checkForDialogRelevanceByDialogAppearances(){
+        //check for a value of the first time the dialog popped to the user which stored in Parse
         String firstRatingDateInMillie = ParseInstallation.getCurrentInstallation().getString(firstRatingDate);
 
+        //if its not null-> convert it to number
+        //else pop the dialog because this means it's the user first time
         if (firstRatingDateInMillie != null) {
             long firstDateInMillieAsLong = Long.parseLong(firstRatingDateInMillie);
+        //if this date is in the previous amount of time we want(currently, a year back)-> proceed.
 
-            if (firstDateInMillieAsLong + (365 * DAYS_CALCULATION_TO_MILLISEC) > System.currentTimeMillis()) {
+            if (firstDateInMillieAsLong + (DAYS_TO_CHECK_FROM_FIRST_RATING * DAYS_CALCULATION_TO_MILLISEC) > System.currentTimeMillis()) {
 
                 if (yearlyRatingsConvertedToInt < MAX_YEARLY_RATING_DIALOG_APPEAR) {
                     this.showDialog(this.activity);

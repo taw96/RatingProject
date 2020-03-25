@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         ratingManager.appOpened();
-        ratingManager.checkForShowDialog();
+        ratingManager.checkForDialogRelevanceByCrashAndEntrances();
 
         Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
 
