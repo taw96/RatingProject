@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,7 +16,12 @@ import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.SaveCallback;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,6 +161,35 @@ public class ELRatingManager {
         this.showDialog(this.activity);
         this.setDataToParse(firstRatingDate, String.valueOf(System.currentTimeMillis()));
     }
+
+    public Bitmap getBitmap(String url) {    //pass the complete URL of the web service query
+        Bitmap bmp = null;
+        URL myURL = null;
+        try {
+            myURL = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+//        HttpURLConnection urlConnection =null;
+        InputStream inputStream = null;
+
+        try {
+            assert myURL != null;
+            HttpURLConnection urlConnection =(HttpURLConnection) myURL.openConnection();
+            urlConnection.setRequestMethod("GET");
+//                urlConnection.setReadTimeout();
+            urlConnection.connect();
+            inputStream = urlConnection.getInputStream();
+
+            bmp = BitmapFactory.decodeStream(inputStream);    //BitmapFactory decodes the InputStream of the HttpResponse
+        } catch (IllegalStateException e) {
+            Log.e("ERROR",e.getMessage());
+        } catch (IOException e) {
+            Log.e("ERROR",e.getMessage());
+        }
+        return bmp;
+    }
+
 
 
 

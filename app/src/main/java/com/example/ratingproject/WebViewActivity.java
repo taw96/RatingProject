@@ -19,7 +19,6 @@ public class WebViewActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl("https://beta.eloops.com/appviews/customPage/elns1cT3ublmGKUic8x5W1fVH/5654/ae52ef29-7457-4acf-a9cf-b75044dc125d");
 
-
         webView.setWebViewClient(new WebViewClient() {
 
             @Override

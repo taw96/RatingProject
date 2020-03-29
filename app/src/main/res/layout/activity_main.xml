@@ -8,6 +8,17 @@
     android:background="#ffff">
 
     <Button
+        android:id="@+id/tutorial"
+        android:text="Tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/showPopup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
         android:id="@+id/showPopup"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

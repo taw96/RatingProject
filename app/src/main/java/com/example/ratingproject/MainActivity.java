@@ -11,13 +11,17 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +33,13 @@ import com.parse.SaveCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,10 +53,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Url;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button showPopup, serverPopup,toWebView, crashButton;
+    Button showPopup, serverPopup,toWebView, crashButton, tutorial;
     public static Context contextOfApplication;
 
 
@@ -54,7 +66,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         ELRatingManager ratingManager = new ELRatingManager(MainActivity.this);
+
+//        bitmap = (ImageView) findViewById(R.id.biti);    //retrieve the ImageView widget from the layout
+//        bitmap.setImageBitmap(ratingManager.getBitmap("https://media.giphy.com/media/Xmz6AD5s92Re8/giphy.gif"));    //set the retrieved Bitma
 
         contextOfApplication = getApplicationContext();
 
@@ -65,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
         Fabric.with(this, new Crashlytics());
 
-        //defining UI items
+        //defining UI items]
+
+        tutorial = findViewById(R.id.tutorial);
 
         showPopup = findViewById(R.id.showPopup);
 
@@ -76,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
         crashButton = findViewById(R.id.crashButton);
 
         //write to shared preferences user is on app
+
+        tutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), TutorialActivity.class);
+                startActivity(i);
+            }
+        });
 
         showPopup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
 
     public static Context getContextOfApplication(){
         return contextOfApplication;
